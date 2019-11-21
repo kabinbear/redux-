@@ -1,12 +1,15 @@
 import React from 'react'
-import {render} from 'react-dom'
+import { render } from 'react-dom'
 import App from './App'
 import store from './store'
-window.store = store
-console.log(store.getState())
+import { Provider } from 'react-redux'
+
 render(
-    <App store={store} />,
-    document.querySelector('#root') 
+    <Provider store={store}>
+        <App />
+    </Provider>,
+
+    document.querySelector('#root')
 )
 
 

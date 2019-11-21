@@ -1,22 +1,9 @@
 
 import React, { Component } from 'react'
+ import { connect } from 'react-redux'
 import { increment, decrement } from '../../actions/cart'
-export default class CartList extends Component {
-    constructor() {
-        super()
-        this.state = {
-            cartList: []
-        }
-    }
-    getState = ()=>{
-        this.setState({
-           cartList:this.props.store.getState()
-        })
-    }
-    componentDidMount() {
-        this.getState()
-        this.props.store.subscribe(this.getState)
-    }
+ 
+class CartList extends Component {
     render() {
         return (
             <table>
@@ -31,7 +18,7 @@ export default class CartList extends Component {
                 </thead>
                 <tbody>
                     {
-                        this.state.cartList.map(item => {
+                        this.props.cartList.map(item => {
                             return (
                                 <tr key={item.id}>
                                     <td>{item.id}</td>
@@ -39,13 +26,13 @@ export default class CartList extends Component {
                                     <td>{item.price}</td>
                                     <td>
                                         <button onClick={
-                                            () => {
-                                                this.props.store.dispatch(increment(item.id))
-                                            }}>-</button>
+
+                                            this.props.decrement.bind(this, item.id)
+                                        }>-</button>
                                         <span>{item.amount}</span>
-                                        <button onClick={() => {
-                                            this.props.store.dispatch(decrement(item.id))
-                                        }
+                                        <button onClick={
+                                            this.props.increment.bind(this, item.id)
+
                                         }>+</button>
                                     </td>
                                 </tr>
@@ -57,3 +44,20 @@ export default class CartList extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    console.log(state)
+    return {
+        cartList: state
+    }
+}
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         add: (id)=> dispatch(increment(id)),
+//         reduce: (id)=>dispatch(decrement(id)),
+//     }
+// }
+//connect 方法有四个参数，常用的就是前面两个，
+// 第一个参数是 mapStateToprops ，作用就是从store 里把state注入到当前组件的props 上
+// 第二个参数可以是mapDispatchToProps ， 这个的主要作用是把action生成的方法注入到当前组件的props上 
+export default connect(mapStateToProps, { increment, decrement })(CartList)
