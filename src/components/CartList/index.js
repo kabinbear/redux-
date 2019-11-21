@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
  import { connect } from 'react-redux'
-import { increment, decrement } from '../../actions/cart'
+import { increment, decrement,decrementAsync } from '../../actions/cart'
  
 class CartList extends Component {
     render() {
@@ -34,6 +34,9 @@ class CartList extends Component {
                                             this.props.increment.bind(this, item.id)
 
                                         }>+</button>
+                                        <button onClick={this.props.decrementAsync.bind(this,item.id)}>
+                                            异步减
+                                        </button>
                                     </td>
                                 </tr>
                             )
@@ -60,4 +63,4 @@ const mapStateToProps = (state) => {
 //connect 方法有四个参数，常用的就是前面两个，
 // 第一个参数是 mapStateToprops ，作用就是从store 里把state注入到当前组件的props 上
 // 第二个参数可以是mapDispatchToProps ， 这个的主要作用是把action生成的方法注入到当前组件的props上 
-export default connect(mapStateToProps, { increment, decrement })(CartList)
+export default connect(mapStateToProps, { increment, decrement,decrementAsync })(CartList)
